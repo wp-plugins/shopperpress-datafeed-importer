@@ -52,8 +52,7 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
                 }
                 fclose($handle1);
                 ?>
-                </select>
-                  Select a money value for setting the Sale price.</td>
+                </select></td>
             </tr>
               
             <tr>
@@ -75,8 +74,7 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
                 }
                 fclose($handle2);
                 ?>
-                </select>
-                  Select a money value for setting the Discounted price.</td>
+                </select></td>
             </tr>     
               
             <tr>
@@ -98,8 +96,7 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
                 }
                 fclose($handle3);
                 ?>
-                </select>
-                  Select your main product and post image.</td>
+                </select></td>
             </tr>       
             
             <tr>
@@ -120,8 +117,7 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
                 }
                 fclose($handle4);
                 ?>
-                </select>
-                  Select the column with mutiple images in one string.</td>
+                </select></td>
             </tr>       
                         
             <tr>
@@ -142,8 +138,7 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
                 }
                 fclose($handle5);
                 ?>
-                </select>
-                  Select the column that has&nbsp;a url for using as thumb image.</td>
+                </select></td>
             </tr> 
             
             <tr>
@@ -164,8 +159,7 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
                 }
                 fclose($handle6);
                 ?>
-                </select>
-                  Select the column that holds your shipping cost.</td>
+                </select></td>
             </tr> 
             
             <tr>
@@ -186,8 +180,7 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
                 }
                 fclose($handle7);
                 ?>
-                </select>
-                  Select an image data column to active this product as a featured item.</td>
+                </select></td>
             </tr> 
             
             <tr>
@@ -208,50 +201,131 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
                 }
                 fclose($handle8);
                 ?>
-                </select>
-                  Select a large chunk of text content to generate your post excerpt.</td>
+                </select></td>
             </tr> 
             
             <tr>
-                <td>Keywords:</td><td></td><td><select name="paideditiononly" size="1" disabled="disabled">      
-                <option value="paideditiononly">Exclude</option>     
-                </select>
-                Paid edition only&nbsp;- Allows automatic keywords to be generated from text content.</td>
+                <td>Keywords:</td><td></td><td><select name="keywords_col" size="1">      
+                <option value="999">Exclude</option>     
+                <?php           
+                $handle9 = fopen("$csvfiledirectory", "r"); $stop = 0; $i = 0;
+                while (($data = fgetcsv($handle9, 5000, $delimiter)) !== FALSE && $stop != 1)
+                {	 
+                    $stop++;
+                    $i = 0; 
+                    while(isset($data[$i]))
+                    {
+                        $data[$i] = rtrim($data[$i]);
+                        ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
+                        $i++;
+                    }
+                }
+                fclose($handle9);
+                ?>
+                </select></td>
             </tr> 
             
             <tr>
-                <td>Tags:</td><td></td><td><select name="paideditiononly" size="1" disabled="disabled">      
-                <option value="paideditiononly">Exclude</option>     
-  
-                </select>
-Paid edition only&nbsp;- Allows automatic post tags to be generated from text content.</td>
+                <td>Tags:</td><td></td><td><select name="tags_col" size="1">      
+                <option value="999">Exclude</option>     
+                <?php           
+                $handle10 = fopen("$csvfiledirectory", "r"); $stop = 0; $i = 0;
+                while (($data = fgetcsv($handle10, 5000, $delimiter)) !== FALSE && $stop != 1)
+                {	 
+                    $stop++;
+                    $i = 0; 
+                    while(isset($data[$i]))
+                    {
+                        $data[$i] = rtrim($data[$i]);
+                        ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
+                        $i++;
+                    }
+                }
+                fclose($handle10);
+                ?>
+                </select></td>
             </tr> 
             
             <tr>
-                <td>Unique:</td><td></td><td><select name="paideditiononly" size="1" disabled="disabled">      
-                <option value="paideditiononly">Exclude</option>       
-                </select>
-Paid edition only - Key identification&nbsp;for updating old posts with new product data.</td>
+                <td>Unique:</td><td></td><td><select name="uniquecolumn_col" size="1">      
+                <option value="999">Exclude</option>     
+                <?php           
+                $handle11 = fopen("$csvfiledirectory", "r"); $stop = 0; $i = 0;
+                while (($data = fgetcsv($handle11, 5000, $delimiter)) !== FALSE && $stop != 1)
+                {	 
+                    $stop++;
+                    $i = 0; 
+                    while(isset($data[$i]))
+                    {
+                        $data[$i] = rtrim($data[$i]);
+                        ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
+                        $i++;
+                    }
+                }
+                fclose($handle11);
+                ?>
+                </select></td>
             </tr> 
 
         <tr>
             <td>Custom List 1:</td>
             <td></td>
-            <td>
-                <select name="paideditiononly" size="1" disabled="disabled">      
-                    <option value="paideditiononly">Exclude</option>     
-                </select>
-Paid edition only&nbsp;- ShopperPress own &quot;customlist1&quot; Custom Field. </td>
+            <td><select name="customlist1" size="1">      
+                <option value="999">Exclude</option>     
+                <?php           
+            $handle12 = fopen("$csvfiledirectory", "r"); 
+
+            $stop = 0;
+            $i = 0;
+            while (($data = fgetcsv($handle12, 5000, $delimiter)) !== FALSE && $stop != 1)// Gets CSV rows
+            {	 
+                $stop++;// used to limit row parsing to just 1
+            
+                $i = 0; 
+            
+                while(isset($data[$i]))
+                {
+                    $data[$i] = rtrim($data[$i]);
+                    
+                    ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
+                
+                    $i++; // $i will equal number of columns - use to process submission
+                }
+            }
+            
+            fclose($handle12);
+            ?>
+            </select></td>
         </tr>
                        
         <tr>
             <td>Custom List 2:</td>
             <td></td>
-            <td>
-                <select name="paideditiononly" size="paideditiononly" disabled="disabled">      
-                    <option value="paideditiononly">Exclude</option>     
-                </select>
-Paid edition only&nbsp;- ShopperPress own &quot;customlist2&quot; Custom Field</td>
+            <td><select name="customlist2" size="1">      
+                <option value="999">Exclude</option>     
+                <?php           
+            $handle13 = fopen("$csvfiledirectory", "r");
+            $stop = 0;
+            $i = 0;
+            while (($data = fgetcsv($handle13, 5000, $delimiter)) !== FALSE && $stop != 1)// Gets CSV rows
+            {	 
+                $stop++;// used to limit row parsing to just 1
+            
+                $i = 0; 
+            
+                while(isset($data[$i]))
+                {
+                    $data[$i] = rtrim($data[$i]);
+                    
+                    ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
+                
+                    $i++; // $i will equal number of columns - use to process submission
+                }
+            }
+            
+            fclose($handle13);
+            ?>
+            </select></td>
         </tr>
 			
                             
@@ -266,8 +340,7 @@ Paid edition only&nbsp;- ShopperPress own &quot;customlist2&quot; Custom Field</
             <input name="campaigntype" type="hidden" value="<?php echo $campaigntype; ?>" />
                 
             <tr>
-                <td colspan="21"><p><input name="matchsubmit" class="button-primary" type="submit" value="Submit" /> 
-                  Submission May Take 2-3 Minutes As It Counts All Rows In Your CSV File</p></td>
+                <td colspan="21"><p><input name="matchsubmit" class="button-primary" type="submit" value="Submit" /> Submission May Take 2-3 Minutes To Process</p></td>
             </tr>
                 
         </table>

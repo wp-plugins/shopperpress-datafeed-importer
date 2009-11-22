@@ -1,15 +1,23 @@
-<h1> ShopperPress DataFeed Importer (Free Edition)</h1>
-
 <?php
 // get current option values
 $debugmode = get_option('spdfi_debugmode');
 $processingtrigger = get_option('spdfi_processingtrigger');
+$tagslength = get_option('spdfi_tagslength');
 $postsperhit = get_option('spdfi_postsperhit');
+$numerictags = get_option('spdfi_numerictags');
 $publisherid = get_option('spdfi_publisherid');
+$autokeywords = get_option('spdfi_autokeywords');
+$autodescription = get_option('spdfi_autodescription');
+$autotags = get_option('spdfi_autotags');
 $maxstagtime = get_option('spdfi_maxstagtime');
 $localhostinstalled = get_option('spdfi_localhostinstalled');
 $defaultposttype = get_option('spdfi_defaultposttype');
+$defaultping = get_option('spdfi_defaultping');
+$commentstatus = get_option('spdfi_defaultcomment');
+$defaultphase =	get_option('spdfi_defaultphase');
 $spdfi_maxexecutiontime = get_option('spdfi_maxexecutiontime');
+$spdfi_itemqty = get_option('spdfi_itemqty');
+
 
 function spdfi_checkboxstatus1($v)
 {	// echo opposite value to current value
@@ -83,7 +91,7 @@ $usernames = array(
 					
 				<div class="postbox">
                 
-					<h3 class='hndle'><span>Post Settings</span> (Paid Edition Only)</h3>
+					<h3 class='hndle'><span>Post Settings</span></h3>
 
 					<div class="inside">
 
@@ -92,26 +100,25 @@ $usernames = array(
                         <p>Default Publisher ID: <?php wp_dropdown_users( $usernames );?></p>
                       
                       
-           			  <p>Product Quantity: <input type="text" name="spdfi_itemqty" value="5" size="3" maxlength="3" disabled="disabled" />
-           			  </p>
+           			  <p>Product Quantity: <input type="text" name="spdfi_itemqty" value="<?php echo $spdfi_itemqty; ?>" size="3" maxlength="3" <?php if(get_option('spdfi_itemqty') == 1){echo 'disabled="disabled"';}?> /></p>
 
 
                         <p>Default Post Type: 
-                        	<select name="paideditiononly" size="1" disabled="disabled">
+                        	<select name="spdfi_defaultposttype" size="1" <?php if(get_option('spdfi_demomode') == 1){echo 'disabled="disabled"';}?>>
                             	<option value="post" <?php if($defaultposttype == 'post'){echo 'selected="selected"';}?>>Post</option>
                             	<option value="page" <?php if($defaultposttype == 'page'){echo 'selected="selected"';}?>>Page</option>
                             </select>
                         </p>
                       
                         <p>Default Ping: 
-                        	<select name="paideditiononly" size="1" disabled="disabled">
+                        	<select name="spdfi_defaultping" size="1">
                             	<option value="1" <?php if($defaultping == '1'){echo 'selected="selected"';}?>>On</option>
                             	<option value="0" <?php if($defaultping == '0'){echo 'selected="selected"';}?>>Off</option>
                             </select>
                         </p>
                              
                         <p>Default Comments: 
-                        	<select name="paideditiononly" size="1" disabled="disabled">
+                        	<select name="spdfi_defaultcomment" size="1">
                             	<option value="open" <?php if($commentstatus == 'open'){echo 'selected="selected"';}?>>Open</option>
                             	<option value="closed" <?php if($commentstatus == 'closed'){echo 'selected="selected"';}?>>Closed</option>
                             </select>
@@ -160,21 +167,20 @@ $usernames = array(
 					
 				<div class="postbox">
                 
-					<h3 class='hndle'><span>SEO</span> (Paid Edition Only)</h3>
+					<h3 class='hndle'><span>SEO</span></h3>
 
 					<div class="inside">
 
-            			<p>Allow Automatic Keyword Creation:
-            			  <input name="paideditiononly" type="checkbox" value="0"  disabled="disabled" />
-            			</p>
+            			<p>Allow Automatic Keyword Creation: <input name="spdfi_autokeywords" type="checkbox" value="<?php spdfi_checkboxstatus1($autokeywords); ?>" <?php spdfi_checkboxstatus2($autokeywords); ?> /> 
+           			  </p>
 					  <p>Allow Automatic Excerpt Creation: 
-					    <input name="paideditiononly" type="checkbox" value="0" disabled="disabled" /> 
+					    <input name="spdfi_autodescription" type="checkbox" value="<?php spdfi_checkboxstatus1($autodescription); ?>" <?php spdfi_checkboxstatus2($autodescription); ?> /> 
 					  </p>
-					  <p>Allow Automatic Tag Creation: <input name="paideditiononly" type="checkbox" value="0" disabled="disabled" /> 
+					  <p>Allow Automatic Tag Creation: <input name="spdfi_autotags" type="checkbox" value="<?php spdfi_checkboxstatus1($autotags); ?>" <?php spdfi_checkboxstatus2($autotags); ?> /> 
 					  </p>
-                      <p>Post TAG's Maximum Length: <input type="text" name="paideditiononly" value="20" size="3" maxlength="3" disabled="disabled" /> 
+                      <p>Post TAG's Maximum Length: <input type="text" name="spdfi_tagslength" value="<?php echo $tagslength; ?>" size="3" maxlength="3" /> 
                       </p>
-                      <p>Allow Numeric Tags: <input name="paideditiononly" type="checkbox" value="0" disabled="disabled" /> 
+                      <p>Allow Numeric Tags: <input name="spdfi_numerictags" type="checkbox" value="<?php spdfi_checkboxstatus1($numerictags); ?>" <?php spdfi_checkboxstatus2($numerictags); ?> /> 
                       </p>
                      </div>   
                                       
@@ -189,9 +195,19 @@ $usernames = array(
     <input type="hidden" name="page_options" value="
     spdfi_debugmode,
     spdfi_processingtrigger,
+    spdfi_postsperhit,
     spdfi_publisherid,
+    spdfi_maxstagtime,
+    spdfi_autokeywords,
+    spdfi_autodescription,
+    spdfi_autotags,
+    spdfi_tagslength,
+    spdfi_numerictags,
 	spdfi_defaultposttype,
+    spdfi_defaultping,
+    spdfi_defaultcomment,
 	spdfi_defaultphase,
+    spdfi_itemqty
     " />
     
     <p class="submit">

@@ -12,8 +12,8 @@
                         <table>
                             <tr>
                                 <td>Publish</td>
-                                <td><input type="radio" name="paideditiononly" value="paideditiononly" id="paideditiononly" disabled="disabled" /></td>
-                                <td>&nbsp;Paid Edition Only</td>
+                                <td><input type="radio" name="poststatus" value="publish" id="poststatus_0" /></td>
+                                <td></td>
                             </tr>     			
                             
                             <tr>
@@ -24,7 +24,7 @@
                                                 
                             <tr>
                                 <td>Draft </td>
-                                <td><input type="radio" name="paideditiononly" value="paideditiononly" id="paideditiononly" disabled="disabled" /></td>
+                                <td><input type="radio" name="poststatus" value="draft" id="poststatus_2" /></td>
                                 <td></td>
                             </tr>
                         </table>                  
@@ -40,11 +40,11 @@
                 <div class="postbox">
                     <h3 class='hndle'><span>Other Publish Settings:</span></h3>
                     <div class="inside">
-                        <table width="348">
+                        <table>
                             <tr>
-                                <td width="8"></td>
-                                <td width="159">Random Post Date: <input name="paideditiononly" type="checkbox" value="paideditiononly" disabled="disabled" /></td>
-                                <td width="165">Paid Edition Only</td>
+                                <td></td>
+                                <td>Random Post Date: <input name="randomdate" type="checkbox" value="1" /></td>
+                                <td></td>
                             </tr>
                         </table>                  
                     </div>  

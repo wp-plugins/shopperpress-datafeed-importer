@@ -12,18 +12,162 @@ else
 {
 	if($pfm == 'manual' || $pfm == 'mixed')// mixed and manual requires more data from form
 	{
-		// paid edition only
+		if(!empty($_POST['cat1a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat1a'];
+			$cat = $_POST['cat1b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		
+		if(!empty($_POST['cat2a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat2a'];
+			$cat = $_POST['cat2b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+
+		if(!empty($_POST['cat3a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat3a'];
+			$cat = $_POST['cat3b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+
+		if(!empty($_POST['cat4a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat4a'];
+			$cat = $_POST['cat4b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat5a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat5a'];
+			$cat = $_POST['cat5b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "csvtopost_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat6a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat6a'];
+			$cat = $_POST['cat6b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat7a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat7a'];
+			$cat = $_POST['cat7b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat8a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat8a'];
+			$cat = $_POST['cat8b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat9a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat9a'];
+			$cat = $_POST['cat9b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat10a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat11a'];
+			$cat = $_POST['cat11b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat12a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat12a'];
+			$cat = $_POST['cat12b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "csvtopost_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat13a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat13a'];
+			$cat = $_POST['cat13b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat14a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat14a'];
+			$cat = $_POST['cat14b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
+		if(!empty($_POST['cat15a']))
+		{
+			# SAVE TO CUSTOM FIELD TABLE
+			$value = $_POST['cat15a'];
+			$cat = $_POST['cat15b'];
+			$sqlQuery = "INSERT INTO " .
+			$wpdb->prefix . "spdfi_categories(camid,catid,uniquevalue)
+			VALUES('$camid','$cat','$value')";
+			$wpdb->query($sqlQuery);
+		}
 	}
 	
 	$filtercolumn =	$_POST['optedfiltercolumn'];
+	$filtercolumn2 = $_POST['optedfiltercolumn2'];
+	$filtercolumn3 = $_POST['optedfiltercolumn3'];
 	@$defaultpostcategory = $_POST['defaultpostcategory'];
 	$defaultphase =	get_option('csv2post_defaultphase');
 
 	$sqlQuery = "UPDATE " .
-	$wpdb->prefix . "spdfi_campaigns SET defaultcat = '$defaultpostcategory',filtercolumn = '$filtercolumn',filtermethod = '$pfm',stage = '4' WHERE id = '$camid'";
+	$wpdb->prefix . "spdfi_campaigns SET defaultcat = '$defaultpostcategory',filtercolumn = '$filtercolumn',filtercolumn2 = '$filtercolumn2',filtercolumn3 = '$filtercolumn3',filtermethod = '$pfm',stage = '100',allowupdate = '$defaultphase' WHERE id = '$camid'";
 	$wpdb->query($sqlQuery);
 	
-	$stage4complete = true;
+	$stage5complete = true;
 
 }// end if filter method selected
 

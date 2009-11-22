@@ -5,6 +5,8 @@ if(!isset($_POST['poststatus']))
 }
 elseif(isset($_POST['poststatus']))
 {
+	$status = $_POST['poststatus'];
+
 	if(isset($_POST['randomdate']) && $_POST['randomdate'] == 1)
 	{
 		$randomdate = $_POST['randomdate'];
@@ -13,10 +15,12 @@ elseif(isset($_POST['poststatus']))
 	{
 		$randomdate = 0;
 	}
-		
+	
+	global $wpdb;
+	
 	# UPDATE CAMPAIGN STAGE COUNTER
 	$sqlQuery = "UPDATE " .
-	$wpdb->prefix . "spdfi_campaigns SET stage = '4', randomdate = '$randomdate' WHERE id = '$camid'";
+	$wpdb->prefix . "spdfi_campaigns SET stage = '4', poststatus = '$status',randomdate = '$randomdate' WHERE id = '$camid'";
 	$wpdb->query($sqlQuery);
 	$stage3complete = true;
 }

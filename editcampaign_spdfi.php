@@ -1,5 +1,4 @@
-<h1> ShopperPress DataFeed Importer (Free Edition)</h1>
-<h2> Campaign Management</h2>
+<h2> Pro Campaign Management</h2>
 <p>Here you can manage your campaigns including pause, start or undo them.</p>
 
 <?php

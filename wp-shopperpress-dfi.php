@@ -1,11 +1,11 @@
 <?php
 /*
-	Plugin Name: ShopperPress DataFeed Importer
-	Version: 0.1
-	Plugin URI: http://www.webtechglobal.co.uk
-	Description: Import csv files download from datafeed services into your ShopperPress themed blog!
+	Plugin Name: ShopperPress DFI Pro
+	Version: 0.3
+	Plugin URI: http://www.shopperpress-datafeed-importer.com
+	Description: Pro csv import plugin for creating posts using datafeeds on blogs with ShopperPress themes!
 	Author: Ryan Bayne
-	Author URI: http://www.webtechglobal.co.uk
+	Author URI: http://www.webtechglobal.co.uk/wordpress-services/wordpress-plugins/shopperpress-datafeed-importer
 */
 global $wpdb;
 
@@ -70,7 +70,7 @@ function wtg_spdfi_processcheck()
 // check if any ongoing processing is happening before triggering further processing
 $t = get_option('spdfi_lastprocessingtime');
 $c = get_option('spdfi_currentprocess');
-$t = $t + 5;// add ten seconds to make extended time
+$t = $t + 10;// add ten seconds to make extended time
 
 if($c == 0 && $t < time())// if the extended time
 {
@@ -86,7 +86,7 @@ update_option('spdfi_currentprocess',0);// set back to zero to allow processing 
 function spdfi_plugincss() 
 {
 	// NEW METHOD
-	$url = WP_CONTENT_URL . '/plugins/shopperpress-dfi-freeedition/style.css';
+	$url = WP_CONTENT_URL . '/plugins/shopperpress-datafeed-importer/style.css';
 
     echo '<link rel="stylesheet" type="text/css" href="' . $url . '" />';
 
@@ -101,22 +101,31 @@ function spdfi_plugincss()
 	do_action("admin_print_styles-post-php");
 	do_action('admin_print_styles');
 }
-
 add_action('admin_head', 'spdfi_plugincss');
 
+
+// add action for detecting cloaked url click
+function spdfi_processcloakedurlclick() 
+{
+	require('cloakedurls_spdfi.php');// processes click and forwards user to destination
+}
+add_action('init', 'spdfi_processcloakedurlclick');
+
+
+# ADD MENU HOOK AND FUNCTIONS
 add_action('admin_menu', 'wtg_spdfispdfi_add_pages');
 
 function wtg_spdfispdfi_add_pages() 
 {
 	if(get_option('spdfi_demomode') == 1){$i = 0;}else{$i = 8;}
 	
-	add_menu_page('S.P. DFI Free', 'S.P. DFI Free', $i, __FILE__, 'wtg_spdfispdfi_toplevel_page');
+	add_menu_page('S.P. DFI', 'S.P. DFI', $i, __FILE__, 'wtg_spdfispdfi_toplevel_page');
     add_submenu_page(__FILE__, 'New Campaign', 'New Campaign', $i, 'new_campaign_spdfi', 'wtg_spdfispdfi_sublevel_page1');
     add_submenu_page(__FILE__, 'Manage Campaigns', 'Manage Campaigns', $i, 'manage_campaigns_spdfi', 'wtg_spdfispdfi_sublevel_page2');
     add_submenu_page(__FILE__, 'Disclaimer', 'Disclaimer', $i, 'disclaimer_spdfi', 'wtg_spdfispdfi_sublevel_page3');
     add_submenu_page(__FILE__, 'Settings', 'Settings', $i, 'settings_spdfi', 'wtg_spdfispdfi_sublevel_page4');
     add_submenu_page(__FILE__, 'Tools', 'Tools', $i, 'tools_spdfi', 'wtg_spdfispdfi_sublevel_page5');
-    add_submenu_page(__FILE__, 'Layouts (WYSIWYG)', 'Layouts (WYSIWYG)', $i, 'layouts_spdfi', 'wtg_spdfispdfi_sublevel_page6');
+    add_submenu_page(__FILE__, 'Layouts', 'Layouts', $i, 'layouts_spdfi', 'wtg_spdfispdfi_sublevel_page6');
     add_submenu_page(__FILE__, 'CSV Uploader', 'CSV Uploader', $i, 'uploader_spdfi', 'wtg_spdfispdfi_sublevel_page7');
 }
 

@@ -8,16 +8,21 @@ function spdfi_optionsinstallation($state)
 	{
 		delete_option('spdfi_debugmode');// 0 = off 1 = on
 		delete_option('spdfi_processingtrigger','shutdown');
+		delete_option('spdfi_tagslength');// usually 50-150
 		delete_option('spdfi_postsperhit');// usually 5-20
 		delete_option('spdfi_publisherid');// any number
 		delete_option('spdfi_defaultcatparent');// any number
+		delete_option('spdfi_autokeywords');// 1 = on 0 = off
 		delete_option('spdfi_autodescription');// 1 = on 0 = off
+		delete_option('spdfi_autotags');// 1 = on 0 = off
 		delete_option('spdfi_maxstagtime');// usually 20-50
 		delete_option('spdfi_lastfilename');
 		delete_option('spdfi_currentprocess');// indicates processing is ongoing or not	
 		delete_option('spdfi_defaultposttype');// post or page
+		delete_option('spdfi_defaultping');// post ping on or off
 		delete_option('spdfi_defaultcomment');// allow comments or not setting
 		delete_option('spdfi_defaultphase');// 0 = auto update start not allow, manual start only and 1 = auto start allowed
+		delete_option('spdfi_tooltipsonoff');// 0 = off and 1 = on
 		delete_option('spdfi_demomode');// 0 = off and 1 = on
 		delete_option('spdfi_maxexecutiontime');
 		delete_option('spdfi_lastprocessingtime');
@@ -26,15 +31,21 @@ function spdfi_optionsinstallation($state)
 	
 	add_option('spdfi_debugmode',0);// 0 = off 1 = on
 	add_option('spdfi_processingtrigger','shutdown');
+	add_option('spdfi_tagslength',50);// usually 50-150
 	add_option('spdfi_postsperhit',1);// usually 5-20
 	add_option('spdfi_publisherid',1);// any number
 	add_option('spdfi_defaultcatparent',0);// any number
+	add_option('spdfi_autokeywords',1);// 1 = on 0 = off
 	add_option('spdfi_autodescription',1);// 1 = on 0 = off
-	add_option('spdfi_maxstagtime',30);// usually 20-50
+	add_option('spdfi_autotags',1);// 1 = on 0 = off
+	add_option('spdfi_maxstagtime',50);// usually 20-50
 	add_option('spdfi_lastfilename','None Submitted Yet');
 	add_option('spdfi_currentprocess',0);// indicates processing is ongoing or not
 	add_option('spdfi_defaultposttype','post');// post or page
+	add_option('spdfi_defaultping', 1);// post ping on or off
+	add_option('spdfi_defaultcomment', 'open');// post ping on or off
 	add_option('spdfi_defaultphase', 1);// 0 = initial import and 1 is update phase
+	add_option('spdfi_tooltipsonoff', 0);// 0 = off and 1 = on
 	add_option('spdfi_maxexecutiontime', 20);// the number is in seconds
 	add_option('spdfi_lastprocessingtime', time());// used to prevent processing happening too soon
 	add_option('spdfi_itemqty', 5);// default item quantity
@@ -53,7 +64,11 @@ function spdfi_databaseinstallation($state)
 		$table_name = $wpdb->prefix . "spdfi_relationships";
 		$sql = "DROP TABLE ". $table_name;
 		$result = $wpdb->query($sql);
-				
+		
+		$table_name = $wpdb->prefix . "spdfi_customfields";
+		$sql = "DROP TABLE ". $table_name;
+		$result = $wpdb->query($sql);
+		
 		$table_name = $wpdb->prefix . "spdfi_categories";
 		$sql = "DROP TABLE ". $table_name;
 		$result = $wpdb->query($sql);
@@ -87,6 +102,17 @@ function spdfi_databaseinstallation($state)
 		PRIMARY KEY  (`id`)
 		) ENGINE=MyISAM AUTO_INCREMENT=380 DEFAULT CHARSET=utf8 COMMENT='Links between CSV file columns and post parts';";		
 		
+	# TABLE 2
+	$table_name = $wpdb->prefix . "spdfi_customfields";
+	$table2 = "CREATE TABLE `" . $table_name . "` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+		`camid` int(10) unsigned NOT NULL,
+		`identifier` varchar(30) NOT NULL,
+		`value` varchar(500) NOT NULL,
+		`type` int(10) unsigned NOT NULL COMMENT '0 = custom global value 1 = column marriage and possible unique value per post',
+		PRIMARY KEY  (`id`)
+		) ENGINE=MyISAM AUTO_INCREMENT=169 DEFAULT CHARSET=utf8 COMMENT='custom field data for campaigns';";
+
 	# TABLE 3
 	$table_name = $wpdb->prefix . "spdfi_categories";
 	$table3 = "CREATE TABLE `" . $table_name . "` (
@@ -108,25 +134,29 @@ function spdfi_databaseinstallation($state)
   `ratio` int(10) unsigned NOT NULL default '1' COMMENT 'If Staggered processing selected this is the per visitor row to process',
   `stage` int(10) unsigned NOT NULL COMMENT '100 = Ready, 200 = Paused, 300 = FINISHED',
   `csvcolumns` int(10) unsigned default NULL COMMENT 'Number of columns in CSV file',
-  `poststatus` varchar(45) default 'pending' COMMENT 'published,pending,draft',
+  `poststatus` varchar(45) default NULL COMMENT 'published,pending,draft',
   `filtercolumn` int(10) unsigned default '999' COMMENT 'CSV file column ID for the choosen categories filter',
   `tagscolumn` int(10) unsigned default '999' COMMENT 'Column ID assigned for making tags with.',
   `location` varchar(500) default NULL COMMENT 'CSV file location for FULL processing selection',
   `locationtype` int(10) unsigned default NULL COMMENT '1 = link and 2 = upload',
   `posts` int(10) unsigned default '0' COMMENT 'Total number of posts created',
-  `layoutfile` varchar(100) default '1' COMMENT 'Layout and post content styling file selected for this campaign',
+  `layoutfile` varchar(100) default NULL COMMENT 'Layout and post content styling file selected for this campaign',
   `customfieldsmethod` varchar(50) default NULL COMMENT 'Used during post injection - auto, manual or mixed',
   `filtermethod` varchar(50) default NULL COMMENT 'Used during category filtering',
   `delimiter` varchar(3) default NULL,
   `type` int(10) unsigned default NULL COMMENT '1 = localhost to online 0 = standard post to self',
+  `filtercolumn2` int(10) unsigned default '999' COMMENT 'stage 5 child category option',
+  `filtercolumn3` int(10) unsigned default '999' COMMENT 'stage 5 child of child category option',
   `defaultcat` int(10) unsigned default NULL,
   `schedulednumber` int(10) unsigned default NULL COMMENT 'if processing = 3 (scheduled) then this number is the number of posts to be created per day',
   `csvrows` int(10) unsigned default NULL COMMENT 'number of rows in csv file',
   `allowupdate` int(10) unsigned default '0' COMMENT '1 = yes and 0 = no',
+  `phase` int(10) unsigned default '1',
   `randomdate` int(10) unsigned default '0' COMMENT '1 = random date will be applied',
   `updatedposts` int(10) unsigned default '0' COMMENT 'Number of posts updated in this campaign since the campaign started',
   `processcounter` int(10) unsigned default '0' COMMENT 'records position and progress of processing on main processing or updating, is reset during phases',
   `droppedrows` int(10) unsigned default '0' COMMENT 'rows dropped during phase 1',
+  `uniquecolumn` int(10) unsigned default '999',
   `primaryurlcloak` int(10) unsigned default '999' COMMENT 'Primary url cloak, select on stage 2',
   `price_col` int(10) unsigned default '999',
   `oldprice_col` int(10) unsigned default '999',
@@ -138,6 +168,8 @@ function spdfi_databaseinstallation($state)
   `keywords_col` int(10) unsigned default '999',
   `tags_col` int(10) unsigned default '999',
   `images_col` int(10) unsigned default '999',
+  `customlist1_col` int(10) unsigned default '999',
+  `customlist2_col` int(10) unsigned default '999',
   PRIMARY KEY  (`id`)
 		) ENGINE=MyISAM AUTO_INCREMENT=195 DEFAULT CHARSET=utf8;";
 

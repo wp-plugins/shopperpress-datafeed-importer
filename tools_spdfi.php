@@ -5,9 +5,7 @@
 }
 -->
 </style>
-<h1> ShopperPress DataFeed Importer (Free Edition)</h1>
-
-<h2>Tools (Paid Edition Only)</h2>
+<h2>Tools</h2>
 
 <h3>WARNING</h3>
 <h4 class="warning">The functions that can be actioned on this page are not reversable. Please take care when pressing any of the buttons below!</h4>
@@ -65,8 +63,8 @@ if(!isset($_GET['tool']))
 
 					<div class="inside">
                         <p>This tool will delete all your CSV 2 POST PLUS campaign settings and records data, use with caution.</p>
-                        <form method="post" name="paideditiononly" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=databasereinstallation" >
-                            <input name="paideditiononly" class="button-primary" type="submit" value="Submit" disabled="disabled" />
+                        <form method="post" name="tool2" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=databasereinstallation" >
+                            <input name="dbinstall_opentool" class="button-primary" type="submit" value="Submit" />
                         </form>                      
                      </div>                    
 						
@@ -87,8 +85,8 @@ if(!isset($_GET['tool']))
 
 					<div class="inside">
                         <p>This will reset all options and configuration settings to the installation state. </p>
-                        <form method="post" name="paideditiononly" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=optionsreset" >
-                            <input name="paideditiononly" class="button-primary" type="submit" value="Submit" disabled="disabled" />
+                        <form method="post" name="tool2" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=optionsreset" >
+                            <input name="optionsreset_opentool" class="button-primary" type="submit" value="Submit" />
                         </form>                   
                     </div>                    
 						
@@ -108,8 +106,8 @@ if(!isset($_GET['tool']))
 
 					<div class="inside">
                         <p>Delete all the posts from selected categories only.</p>
-                        <form method="post" name="paideditiononly" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masspostdeletebycat" >
-                            <input name="paideditiononly" class="button-primary" type="submit" value="Submit" disabled="disabled" />
+                        <form method="post" name="tool1" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masspostdeletebycat" >
+                            <input name="masspostbycatdelete_opentool" class="button-primary" type="submit" value="Submit" />
                         </form>                
                     </div>                    
 						
@@ -130,8 +128,8 @@ if(!isset($_GET['tool']))
 
 					<div class="inside">
                         <p>Delete all posts from your blog.</p>
-                        <form method="post" name="paideditiononly" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masspostdelete" >
-                            <input name="paideditiononly" class="button-primary" type="submit" value="Submit" disabled="disabled" />
+                        <form method="post" name="tool1" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masspostdelete" >
+                            <input name="masspostdelete_opentool" class="button-primary" type="submit" value="Submit" />
                         </form>                
                     </div>                    
 						
@@ -151,8 +149,8 @@ if(!isset($_GET['tool']))
 
 					<div class="inside">
                         <p>Delete all tags from your blog.</p>
-                        <form method="post" name="paideditiononly" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masstagdelete" >
-                            <input name="paideditiononly" class="button-primary" type="submit" value="Submit" disabled="disabled" />
+                        <form method="post" name="tool1" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masstagdelete" >
+                            <input name="masstagdelete_opentool" class="button-primary" type="submit" value="Submit" />
                         </form>                    
                     </div>                    
 						
@@ -173,8 +171,8 @@ if(!isset($_GET['tool']))
 
 					<div class="inside">
                         <p>Delete all pages from your blog.</p>
-                        <form method="post" name="paideditiononly" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masspagedelete" >
-                            <input name="paideditiononly" class="button-primary" type="submit" value="Submit" disabled="disabled" />
+                        <form method="post" name="tool1" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masspagedelete" >
+                            <input name="masspagedelete_opentool" class="button-primary" type="submit" value="Submit" />
                         </form>                    
                     </div>                    
 						
@@ -195,8 +193,8 @@ if(!isset($_GET['tool']))
 
 					<div class="inside">
                         <p>Delete all categories from your blog.</p>
-                        <form method="post" name="paideditiononly" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masscategorydelete" >
-                            <input name="paideditiononly" class="button-primary" type="submit" value="Submit" disabled="disabled" />
+                        <form method="post" name="tool1" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masscategorydelete" >
+                            <input name="masscategorydelete_opentool" class="button-primary" type="submit" value="Submit" />
                         </form>                    
                     </div>                    
 						

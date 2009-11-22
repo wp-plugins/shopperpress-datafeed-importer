@@ -103,6 +103,7 @@ function spdfi_startcampaign($camid)
 	}
 	else
 	{
+		global $wpdb;
 		$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET stage = '100' WHERE id = '$camid'";
 		$result = $wpdb->query($sqlQuery);
 		if($result){return '<h3>Campaign Now Running</h3>';}else{return '<h3>Campaign Failed To Start</h3>';}

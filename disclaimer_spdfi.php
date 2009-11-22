@@ -1,4 +1,3 @@
-<h1> ShopperPress DataFeed Importer (Free Edition)</h1>
 <h2> Disclaimer, Terms &amp; Conditions</h2>
 <p>Please read and agree to the following conditions in order to use this plugin...</p>
 <ol>

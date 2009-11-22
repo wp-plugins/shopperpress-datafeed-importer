@@ -7,17 +7,35 @@ function spdfi_updatecounters_postmaker($id,$rowsprocessed_event,$rowsused_event
 	
 	$cam = $wpdb->get_row("SELECT updatedposts,posts,allowupdate,phase,csvrows,droppedrows FROM " .$wpdb->prefix . "spdfi_campaigns WHERE id = '$id'");
 	
-	$totalposts = $cam->posts + $rowsused_event;
+	if($cam->phase == 2)// update processing phase
+	{
+		$updatedposts = $rowsused_event + $cam->updatedposts ;// actual posts updated - not rows processed - used to determine number of rows actually used
 
-	$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET posts = '$totalposts',droppedrows = '$rowsdropped_event'   WHERE id = '$id'";
-	$wpdb->query($sqlQuery);
-				
-	$passedrows_event = $cam->droppedrows + $rowsdropped_event + $rowsused_event + $cam->posts;
-		
-	if($passedrows_event >= $cam->csvrows && $cam->allowupdate == 1)// switches to update phase   NEW METHOD
-	{ 
-		$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET phase = '2',updatedposts = '0',droppedrows = '0' WHERE id = '$id'";
+		$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET updatedposts = '$updatedposts',droppedrows = '$rowsdropped_event'  WHERE id = '$id'";
 		$wpdb->query($sqlQuery);
+		
+		$passedrows_event = $cam->droppedrows + $rowsdropped_event + $rowsused_event + $cam->updatedposts;
+
+		if($passedrows_event >= $cam->csvrows && $cam->allowupdate == 1)// reset updated posts counter
+		{
+			$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET updatedposts = '0',droppedrows = '0'  WHERE id = '$id'";
+			$wpdb->query($sqlQuery);
+		}
+	}
+	elseif($cam->phase == 1)// normal processing phase
+	{
+		$totalposts = $cam->posts + $rowsused_event;
+
+		$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET posts = '$totalposts',droppedrows = '$rowsdropped_event'   WHERE id = '$id'";
+		$wpdb->query($sqlQuery);
+					
+		$passedrows_event = $cam->droppedrows + $rowsdropped_event + $rowsused_event + $cam->posts;
+			
+		if($passedrows_event >= $cam->csvrows && $cam->allowupdate == 1)// switches to update phase   NEW METHOD
+		{ 
+			$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET phase = '2',updatedposts = '0',droppedrows = '0' WHERE id = '$id'";
+			$wpdb->query($sqlQuery);
+		}
 	}
 }
 
@@ -25,6 +43,7 @@ function spdfi_custompostlayout_postmaker($camlayoutfile,$camcamname,$camid)
 {
 	global $wpdb;	
 	$r = $wpdb->get_row("SELECT * FROM " .$wpdb->prefix . "spdfi_layouts WHERE id = '$camlayoutfile'");
+	if( !$r ){ error_spdfiplus(__LINE__,__FILE__,'Custom Post Layout not found for a current campaign! Name: ' . $cam->camname .' ID: '. $cam->id .''); return; }
 	return eval( $r->code);
 }
 
@@ -36,13 +55,20 @@ function spdfi_postpart_postmaker($column_counter_getdata,$camid)
 
 function spdfi_duplicatecustomurl_postmaker($type,$phase)
 {
-	if(!empty($_SESSION['post_url']))
-	{	
-		global $wpdb;
-		$customurl = $_SESSION['post_url'];
+	if( $phase == 2 )
+	{
+		return 0; // no duplication check required for post update as the url will stay the same always anyway
+	}
+	else
+	{
+		if(!empty($_SESSION['post_url']))
+		{	
+			global $wpdb;
+			$customurl = $_SESSION['post_url'];
 
-		$wpdb->query("SELECT post_title FROM " .$wpdb->prefix . "posts WHERE post_name = '$customurl'");
-		return $wpdb->num_rows;
+			$wpdb->query("SELECT post_title FROM " .$wpdb->prefix . "posts WHERE post_name = '$customurl'");
+			return $wpdb->num_rows;
+		}
 	}
 }
 
@@ -61,10 +87,16 @@ function spdfi_sanitizetitle_postmaker($type)
 function spdfi_duplicateposttitle_postmaker($phase,$default_postname)
 {			
 	global $wpdb;	
-	
-	$count = 0;
-	$wpdb->query("SELECT post_title FROM " .$wpdb->prefix . "posts WHERE post_name = '$default_postname'");
-	return $wpdb->num_rows;				
+	if( $phase == 2 )
+	{
+		return 0; // no duplication check required for post update as the url will stay the same always anyway
+	}
+	else
+	{
+		$count = 0;
+		$wpdb->query("SELECT post_title FROM " .$wpdb->prefix . "posts WHERE post_name = '$default_postname'");
+		return $wpdb->num_rows;				
+	}
 }
 
 function spdfi_recordnewid_postmaker($id,$post_id)
@@ -80,10 +112,46 @@ function spdfi_metadescription_postmaker($type, $metadescription, $post_id)
 	$autodescription = get_option('spdfi_autodescription');
 	if($autodescription != 0)
 	{
-		add_post_meta($post_id, '_headspace_description', $metadescription, true);
+		if( $type == 1)
+		{
+			# DO LOCAL HOST VERSION HERE
+		}
+		else
+		{
+			add_post_meta($post_id, '_headspace_description', $metadescription, true);
+		}
 	}	
 }
 					
+// add custom field for posts keywords
+function spdfi_metakeywords_postmaker($type,$post_id,$metakeywords)
+{	
+	$autokeywords = get_option('spdfi_autokeywords');				
+	if($autokeywords != 0)
+	{
+		if( $type == 1)
+		{
+			# DO LOCAL HOST VERSION HERE
+		}
+		else
+		{
+			add_post_meta($post_id, 'head_keywords', $metakeywords, true);
+		}
+	}
+}		
+
+function spdfi_customfielduniquecode_postmaker($type,$post_id)
+{
+	if( $type == 1 && !empty($_SESSION['uniquecode_spdfi']) )
+	{
+		# DO LOCAL HOST VERSION HERE
+	}
+	elseif( $type == 1 && !empty($_SESSION['uniquecode_spdfi']) )
+	{
+		add_post_meta($post_id, 'spdfiplus_uniquecode', $_SESSION['uniquecode_spdfi'], true);
+	}
+}
+
 // insert custom fields with preset values			
 function spdfi_customfieldsmanual_postmaker($id,$type,$post_id,$csvrow)
 {
@@ -94,7 +162,14 @@ function spdfi_customfieldsmanual_postmaker($id,$type,$post_id,$csvrow)
 		$key = $x->identifier;
 		$value = $x->value;
 		
-		add_post_meta($post_id, $key, $value, true);
+		if( $cam->type== 1)
+		{
+			# DO LOCAL HOST VERSION HERE
+		}
+		else
+		{
+			add_post_meta($post_id, $key, $value, true);
+		}
 	}
 					
 	// insert custom fields that use column data for value
@@ -111,7 +186,15 @@ function spdfi_customfieldsmanual_postmaker($id,$type,$post_id,$csvrow)
 		{
 			if($column_counter == $v)
 			{ 
-				add_post_meta($post_id, $k, $data, true);			
+				if( $type == 1)
+				{
+					# DO LOCAL HOST VERSION HERE
+				}
+				else
+				{
+					add_post_meta($post_id, $k, $data, true);
+				}
+				
 			}
 			return $column_counter++;
 		}
@@ -140,7 +223,14 @@ function spdfi_customfieldsautomated_postmaker($csvfilepath,$type,$post_id,$csvr
 			{  
 				if($b == $i)// only take action when posts data matches correct column
 				{
-					add_post_meta($post_id, $data_cf[$i], $data, true);
+					if( $type == 1)
+					{
+						# DO LOCAL HOST VERSION HERE
+					}
+					else
+					{
+						add_post_meta($post_id, $data_cf[$i], $data, true);
+					}
 				}
 				$b++;
 			}

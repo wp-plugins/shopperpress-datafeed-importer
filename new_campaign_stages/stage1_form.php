@@ -21,7 +21,7 @@
                 <div class="postbox">
                     <h3 class='hndle'><span>Select Processing Method </span></h3>
                     <div class="inside"><label>
-                        <input type="radio" name="paideditiononly" value="paideditiononly" id="paideditiononly" disabled="disabled" />
+                        <input type="radio" name="processrate" value="1" id="ProcessRate_0" <?php if(get_option('csv2post_demomode') == 1){echo 'disabled="disabled"';}?> />
                         Full</label>
                         <br />
                         
@@ -30,9 +30,10 @@
                         Staggered</label>
                         <br />
                         
-                        <input type="radio" name="paideditiononly" value="paideditiononly" id="paideditiononly" disabled="disabled" />
+                        <input type="radio" name="processrate" value="3" id="ProcessRate_2" />
                         Scheduled</label>
-                        <input type="text" name="paideditiononly" id="paideditiononly" size="4" disabled="disabled" />
+                        <input type="text" name="processratescheduled" id="processratescheduled" size="4" <?php if(get_option('csv2post_demomode') == 1){echo 'maxlength="1"';}?> />
+                         <?php if(get_option('csv2post_demomode') == 1){echo ' Limited to one digit in demo mode!';}?>
                     </div>  
                 </div>
             </div>
@@ -88,19 +89,6 @@
             </div>
         </div>
 	</div>
-
-     <div id="poststuff" class="metabox-holder">
-        <div id="post-body">
-            <div id="post-body-content">
-                <div class="postbox">
-                    <h3 class='hndle'><span>Optional Forced Delimiter - Use When Experiancing Problems</span></h3>
-                    <div class="inside">    
-                    	<input type="text" name="forcedelimiter" maxlength="1" size="1" />
-                    </div>  
-                </div>
-            </div>
-        </div>
-	</div>       
         
     <br />
 

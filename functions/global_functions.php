@@ -1,8 +1,22 @@
 <?php
+function determine_delimiter_wtg($filename)
+{
+	 $fileChunks = explode(".", $filename);
+     return get_option($fileChunks[0]); 
+}
 
 function spdfi_getcsvfilesdir()
 {
 	return WP_CONTENT_DIR . '/spdfifiles/';
+}
+
+function spdfi_tooltip($tooltip)
+{
+	$tooltip_setting = get_option('spdfi_tooltipsonoff');
+	if($tooltip_setting == 1)
+	{
+		echo '<a href="#" class="tt">?<span class="tooltip"><span class="top"></span><span class="middle">' . $tooltip . '</span><span class="bottom"></span></span></a>';	
+	}
 }
 
 function spdfi_queryresult($q)
@@ -98,6 +112,52 @@ function create_meta_description_spdfi($str, $length)
 }
 /* Example:	<meta name="description" content="<?php echo create_meta_description($pagedesc, $met_des_len);?>" /> */
 
+
+//STRIP HTML,TRUNCATE,CREATE KEYWORDS
+function create_meta_keywords_spdfi($str, $length) 
+{
+	$exclude = array('does','work','description','save','$ave','month!','year!','hundreds','dollars','per','month','year',
+	'and','or','but','at','in','on','to','from','is','a','an','am','for','of','the','are','home','much','more',
+	'&','every','this','has','been','with','selecting','set','other','thingy','maybe','shit','fuck','piss','cunt','bastard',
+	'thats','not','too','them','must-have','youre','can','these','where','will','our','end','all','using','use','your','get',
+	'getting','away','you','who','help','helps','any','plus','new','offer','fees','thinking','consider','going','into','where',
+	'interested',"you'll","that's","fee's","year's",'were','had','through','have','made','that','how','his','her','its','&amp;','&','&ndash;','&pos;');
+	$splitstr = @explode(" ", truncate_string_spdfi(seo_simple_strip_tags_spdfi(str_replace(array(",",".")," ", $str)), $length));
+	$new_splitstr = array();
+	foreach ($splitstr as $spstr) 
+	{
+		if (strlen($spstr) > 2 &&!(in_array(strtolower($spstr), $new_splitstr)) &&!(in_array(strtolower($spstr), $exclude))) 
+		{$new_splitstr[] = strtolower($spstr);}
+	}
+	return @implode(", ", $new_splitstr);
+}
+
+// not only remove specified words but removes numeric only values if $tagsnumeric is set to 1 and not 0
+function create_tags_spdfi($str, $length, $tagsnumeric) 
+{
+	$exclude = array('does','work','description','save','$ave','month!','year!','hundreds','dollars','per','month','year',
+	'and','or','but','at','in','on','to','from','is','a','an','am','for','of','the','are','home','much','more',
+	'&','every','this','has','been','with','selecting','set','other','thingy','maybe','shit','fuck','piss','cunt','bastard',
+	'thats','not','too','them','must-have','youre','can','these','where','will','our','end','all','using','use','your','get',
+	'getting','away','you','who','help','helps','any','plus','new','offer','fees','thinking','consider','going','into','where',
+	'interested',"you'll","that's","fee's","year's",'were','had','through','have','made','that','how','his','her','its','&amp;','&','&ndash;','&pos;');
+	$splitstr = @explode(" ", truncate_string_spdfi(seo_simple_strip_tags_spdfi(str_replace(array(",",".")," ", $str)), $length));
+	$new_splitstr = array();
+	foreach ($splitstr as $spstr) 
+	{
+		if($tagsnumeric == 1)
+		{	// numeric only values will be removed
+			if (strlen($spstr) > 2 && !(in_array(strtolower($spstr), $new_splitstr)) && !(in_array(strtolower($spstr), $exclude)) && !is_numeric($spstr)) 
+			{$new_splitstr[] = strtolower($spstr);}
+		}
+		elseif($tagsnumeric == 0)
+		{	// numeric only values will be included
+			if (strlen($spstr) > 2 && !(in_array(strtolower($spstr), $new_splitstr)) && !(in_array(strtolower($spstr), $exclude))) 
+			{$new_splitstr[] = strtolower($spstr);}
+		}
+	}
+	return @implode(", ", $new_splitstr);
+}
 
 //STRIP HTML TAGS - CALLED WITHIN THE OTHER FUNCTIONS
 function seo_simple_strip_tags_spdfi($str)

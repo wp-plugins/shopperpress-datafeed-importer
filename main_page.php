@@ -1,23 +1,24 @@
-<h1> ShopperPress DataFeed Importer (Free Edition)</h1>
-<h2> Main Page <?php if(get_option('spdfi_demomode') == 1){echo ' (Demo Edition)';}?></h2>
+<h2>ShopperPress DataFeed Importer <?php if(get_option('spdfi_demomode') == 1){echo ' (Demo Edition)';}?></h2>
 
+<?php if(get_option('spdfi_demomode') == 1){?>
 	<div id="poststuff" class="metabox-holder">
 		<div id="post-body">
 			<div id="post-body-content">
 				<div class="postbox">
                 
-					<h3 class='hndle'><span>Free Demo Edition Information - Please Read Before Using</span></h3>
-					<p>This demo is intended for use with the <a href="https://secure.avangate.com/affiliate.php?ACCOUNT=&amp;AFFILIATE=8691&amp;PATH=http%3A//www.shopperpress.com/shopping-cart-demo/" title="ShopperPress Demo">ShopperPress</a> theme, if you do not have it yet I highly recommend you to<a href="https://secure.avangate.com/affiliate.php?ACCOUNT=&amp;AFFILIATE=8691&amp;PATH=http%3A//www.shopperpress.com/shopping-cart-demo/" title="Try ShopperPress Demo" target="_blank"> try the demo here</a>. As you understand many functions within the plugin have been limited including those that would normally define your new post styling. Here are important points to know before using so that you get the right experiance...</p>
-                  <ol>
-                      <li><strong> In order for the free edition to work you must have a &quot;title&quot; and a &quot;description&quot; column&nbsp;in your csv title. The default WYSIWYG edited layout was made using those two titles and so the plugin will assume your csv file has them. </strong></li>
-                      <li><strong>Posts are creating in Pending mode, please Publish the first created posts to see the full effect.</strong><strong></strong></li>
-                  </ol>
-<p>Please consider this free edition as a small preview, all the functions you see on the pages are available in the <a href="http://www.webtechglobal.co.uk/wordpress-services/wordpress-plugins/shopperpress-datafeed-importer" title="Visit ShopperPress DataFeed Importer page" target="_blank">paid edition</a>.</p>
-              </div>                    
+					<h3 class='hndle'><span>Demo Edition Information - Please Read</span></h3>
+                    <p>Some functions have been disabled or removed for security. There are functions in CSV 2 POST that can easily effect a server if abused.
+                    The plugin also operates slightly different in order to help avoid users conflicting with each other.</p>
+                    <ul>
+                    	<li>Errors? Most errors are caused by data or csv file configuration/formatting and can easily be&nbsp;fixed, please email info@spdfi.com.</li>
+                      <li>Posts To Wide?&nbsp;- Don't copy multiple special column values to  WYSIWYG editor or use tables in your posts that are wider than the theme.</li>
+                      <li>No Title? - There is a blank box for creating a title above the WYSIWYG editor, you can place the special column values there too.</li>
+                    </ul>
+                </div>                    
 			</div>
     	</div>
     </div>   
-
+<?php } ?>
 
 	<div id="poststuff" class="metabox-holder">
 		<div id="post-body">
@@ -59,12 +60,10 @@
 			<div id="post-body-content">
 				<div class="postbox">
                 
-					<h3 class='hndle'><span>Other Recommended Services</span></h3>
-					<p><a href='https://www.e-junkie.com/ecom/gb.php?cl=29717&c=ib&aff=85223'><img src='http://i627.photobucket.com/albums/tt355/classipress/aff/classipress_468x60_02.jpg' border='0' width='468' height='60' alt='Premium WordPress Theme' /></a>
-					  
-				  </p>
-					<p>&nbsp;</p>
-		       </div>                    
+					<h3 class='hndle'><span>Recommended Services</span></h3>
+					<a href='https://www.e-junkie.com/ecom/gb.php?cl=29717&c=ib&aff=85223'><img src='http://i627.photobucket.com/albums/tt355/classipress/aff/classipress_468x60_02.jpg' border='0' width='468' height='60' alt='Premium WordPress Theme' /></a>
+                        
+               </div>                    
 			</div>
     	</div>
     </div>
