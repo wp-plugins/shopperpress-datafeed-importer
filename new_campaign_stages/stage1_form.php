@@ -21,7 +21,7 @@
                 <div class="postbox">
                     <h3 class='hndle'><span>Select Processing Method </span></h3>
                     <div class="inside"><label>
-                        <input type="radio" name="processrate" value="1" id="ProcessRate_0" <?php if(get_option('csv2post_demomode') == 1){echo 'disabled="disabled"';}?> />
+                        <input type="radio" name="paideditiononly" value="1" id="paideditiononly" disabled="disabled" />
                         Full</label>
                         <br />
                         
@@ -30,10 +30,10 @@
                         Staggered</label>
                         <br />
                         
-                        <input type="radio" name="processrate" value="3" id="ProcessRate_2" />
-                        Scheduled</label>
-                        <input type="text" name="processratescheduled" id="processratescheduled" size="4" <?php if(get_option('csv2post_demomode') == 1){echo 'maxlength="1"';}?> />
-                         <?php if(get_option('csv2post_demomode') == 1){echo ' Limited to one digit in demo mode!';}?>
+                        <input type="radio" name="paideditiononly" value="3" id="paideditiononly" disabled="disabled" />
+Scheduled
+                        </label>
+                  <input type="text" name="paideditiononly" id="paideditiononly" size="4" disabled="disabled" />
                     </div>  
                 </div>
             </div>

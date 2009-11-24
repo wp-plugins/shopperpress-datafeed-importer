@@ -15,9 +15,6 @@ if(isset($_POST['thumbnail_col'])){$thumbnail_col = $_POST['thumbnail_col'];}els
 if(isset($_POST['shipping_col'])){$shipping_col = $_POST['shipping_col'];}else{$shipping_col = 999;}
 if(isset($_POST['featured_col'])){$featured_col = $_POST['featured_col'];}else{$featured_col = 999;}
 if(isset($_POST['excerpt_col'])){$excerpt_col = $_POST['excerpt_col'];}else{$excerpt_col = 999;}
-if(isset($_POST['keywords_col'])){$keywords_col = $_POST['keywords_col'];}else{$keywords_col = 999;}
-if(isset($_POST['tags_col'])){$tags_col = $_POST['tags_col'];}else{$tags_col = 999;}
-if(isset($_POST['uniquecolumn_col'])){$uniquecolumn_col = $_POST['uniquecolumn_col'];}else{$uniquecolumn_col = 999;}
 
 
 # ENTER CSV FILE COLUMN TOTAL TO MAIN CAMPAIGN TABLE FOR VALIDATION LATER
@@ -29,10 +26,7 @@ images_col = '$images_col',
 thumbnail_col = '$thumbnail_col',
 shipping_col = '$shipping_col',
 featured_col = '$featured_col',
-excerpt_col = '$excerpt_col',
-keywords_col = '$keywords_col',
-tags_col = '$tags_col',
-uniquecolumn = '$uniquecolumn_col'
+excerpt_col = '$excerpt_col'
 WHERE id = '$camid'";
 
 $wpdb->query($sqlQuery);

@@ -1,24 +1,17 @@
-<h2>ShopperPress DataFeed Importer <?php if(get_option('spdfi_demomode') == 1){echo ' (Demo Edition)';}?></h2>
+<h2>ShopperPress DataFeed Importer (Restricted/Free Edition)</h2>
 
-<?php if(get_option('spdfi_demomode') == 1){?>
 	<div id="poststuff" class="metabox-holder">
 		<div id="post-body">
 			<div id="post-body-content">
 				<div class="postbox">
                 
-					<h3 class='hndle'><span>Demo Edition Information - Please Read</span></h3>
-                    <p>Some functions have been disabled or removed for security. There are functions in CSV 2 POST that can easily effect a server if abused.
-                    The plugin also operates slightly different in order to help avoid users conflicting with each other.</p>
-                    <ul>
-                    	<li>Errors? Most errors are caused by data or csv file configuration/formatting and can easily be&nbsp;fixed, please email info@spdfi.com.</li>
-                      <li>Posts To Wide?&nbsp;- Don't copy multiple special column values to  WYSIWYG editor or use tables in your posts that are wider than the theme.</li>
-                      <li>No Title? - There is a blank box for creating a title above the WYSIWYG editor, you can place the special column values there too.</li>
-                    </ul>
-                </div>                    
+					<h3 class='hndle'><span>Free and Limited - Please Read</span></h3>
+                    <p>You will find many functions disabled due to this being a free and restricted edition with the intention of providing an insight to the Pro edition. For a true idea of how good this plugin works when there are no restrictions please try the online demo blog at&nbsp;<a href="http://www.shopperpress-datafeed-importer.com">www.shopperpress-datafeed-importer.com</a>.</p>
+</div>                    
 			</div>
     	</div>
     </div>   
-<?php } ?>
+
 
 	<div id="poststuff" class="metabox-holder">
 		<div id="post-body">
@@ -61,9 +54,8 @@
 				<div class="postbox">
                 
 					<h3 class='hndle'><span>Recommended Services</span></h3>
-					<a href='https://www.e-junkie.com/ecom/gb.php?cl=29717&c=ib&aff=85223'><img src='http://i627.photobucket.com/albums/tt355/classipress/aff/classipress_468x60_02.jpg' border='0' width='468' height='60' alt='Premium WordPress Theme' /></a>
-                        
-               </div>                    
+					<p><a href="http://www.csv2post.com"><img src="http://www.webtechglobal.co.uk/wp-content/gallery/csv-2-post-banners/468x60.gif" width="468" height="60" alt="CSV 2 POST for csv importing to any theme!" /></a></p>
+			   <a href='https://www.e-junkie.com/ecom/gb.php?cl=29717&c=ib&aff=85223'><a href='https://www.e-junkie.com/ecom/gb.php?cl=29717&c=ib&aff=85223'><img src='http://i627.photobucket.com/albums/tt355/classipress/aff/classipress_468x60_02.jpg' border='0' width='468' height='60' alt='Premium WordPress Theme' /></a></a></div>                    
 			</div>
     	</div>
     </div>

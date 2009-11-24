@@ -24,35 +24,7 @@ elseif(!empty($_POST['campaignname']) || is_string($_POST['campaignname']))
 			$process = $_POST['processrate'];
 			$csvfilename = $_POST['csvfilename'];
 			$layoutstyle = $_POST['layoutstyle'];
-			
-			// set daily posts then schedule processing
-			if($process == 3)
-			{
-				if(empty($_POST['processratescheduled']))
-				{
-					$schedulednumber = 24;
-				}
-				else
-				{
-					$schedulednumber = $_POST['processratescheduled'];
-				}
-				
-				// figure out the spread of posts over 24 hour period (86400 seconds)
-				$interval = 86400 / $schedulednumber;
-				$starttime = 0;// 
-				
-				$i = 0;
-				
-				$accumulation = 0;
-				
-				while($i < $schedulednumber)
-				{	
-					$i++;
-					wp_schedule_event(time()+$accumulation, 'daily', 'cronschedulledprocessing');
-					$accumulation = $accumulation + $interval;
-				}
-			}
-			
+						
 			// get csv file directory
 			$target_path = spdfi_getcsvfilesdir();
 
@@ -91,31 +63,13 @@ elseif(!empty($_POST['campaignname']) || is_string($_POST['campaignname']))
 				
 				// get delimiter for this file - set in options
 				$delimiter = determine_delimiter_wtg($csvfilename);
-				
-				if($process == 1)// full processing
-				{	
-					$sqlQuery = "INSERT INTO " .
-					$wpdb->prefix . "spdfi_campaigns(camname,camfile,process,stage,layoutfile,delimiter,ratio)
-					VALUES('$camname', '$csvfilename','$process','2','$layoutstyle','$delimiter','$ratio')";
-					$stage1complete = spdfi_queryresult($wpdb->query($sqlQuery));
-					$camid = $wpdb->insert_id;
-				}
-				elseif($process == 2)// staggered processing
-				{	
-					$sqlQuery = "INSERT INTO " .
-					$wpdb->prefix . "spdfi_campaigns(camname,camfile,process,stage,layoutfile,delimiter,ratio)
-					VALUES('$camname', '$csvfilename','$process','2','$layoutstyle','$delimiter','$ratio')";
-					$stage1complete = spdfi_queryresult($wpdb->query($sqlQuery));
-					$camid = $wpdb->insert_id;
-				}
-				elseif($process == 3)// scheduled processing
-				{	
-					$sqlQuery = "INSERT INTO " .
-					$wpdb->prefix . "spdfi_campaigns(camname,camfile,process,stage,layoutfile,schedulednumber,delimiter,ratio)
-					VALUES('$camname', '$csvfilename','$process','2','$layoutstyle',$schedulednumber,'$delimiter','$ratio')";
-					$stage1complete = spdfi_queryresult($wpdb->query($sqlQuery));
-					$camid = $wpdb->insert_id;
-				}
+
+				$sqlQuery = "INSERT INTO " .
+				$wpdb->prefix . "spdfi_campaigns(camname,camfile,process,stage,layoutfile,delimiter,ratio)
+				VALUES('$camname', '$csvfilename','$process','2','$layoutstyle','$delimiter','$ratio')";
+				$stage1complete = spdfi_queryresult($wpdb->query($sqlQuery));
+				$camid = $wpdb->insert_id;
+
 			}
 		}// check all required posts populated
 	}

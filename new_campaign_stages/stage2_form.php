@@ -60,23 +60,8 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
               
             <tr>
                 <td>Old Price:</td>
-                <td></td><td><select name="oldprice_col" size="1">      
+                <td></td><td><select name="paideditiononly" size="1" disabled="disabled">      
                 <option value="999">Exclude</option>     
-                <?php           
-                $handle2 = fopen("$csvfiledirectory", "r"); $stop = 0; $i = 0;
-                while (($data = fgetcsv($handle2, 5000, $delimiter)) !== FALSE && $stop != 1)
-                {	 
-                    $stop++;
-                    $i = 0; 
-                    while(isset($data[$i]))
-                    {
-                        $data[$i] = rtrim($data[$i]);
-                        ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
-                        $i++;
-                    }
-                }
-                fclose($handle2);
-                ?>
                 </select>
                 Select the old price</td>
             </tr>     
@@ -215,7 +200,7 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
             </tr> 
             
             <tr>
-                <td>Keywords:</td><td></td><td><select name="keywords_col" size="1">      
+                <td>Keywords:</td><td></td><td><select name="paideditiononly" size="1">      
                 <option value="999">Exclude</option>     
                 <?php           
                 $handle9 = fopen("$csvfiledirectory", "r"); $stop = 0; $i = 0;
@@ -237,45 +222,15 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
             </tr> 
             
             <tr>
-                <td>Tags:</td><td></td><td><select name="tags_col" size="1">      
+                <td>Tags:</td><td></td><td><select name="paideditiononly" size="1" disabled="disabled">      
                 <option value="999">Exclude</option>     
-                <?php           
-                $handle10 = fopen("$csvfiledirectory", "r"); $stop = 0; $i = 0;
-                while (($data = fgetcsv($handle10, 5000, $delimiter)) !== FALSE && $stop != 1)
-                {	 
-                    $stop++;
-                    $i = 0; 
-                    while(isset($data[$i]))
-                    {
-                        $data[$i] = rtrim($data[$i]);
-                        ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
-                        $i++;
-                    }
-                }
-                fclose($handle10);
-                ?>
                 </select>
                 Select a chunk of text for auto tags <strong>*</strong></td>
             </tr> 
             
             <tr>
-                <td>Unique:</td><td></td><td><select name="uniquecolumn_col" size="1">      
+                <td>Unique:</td><td></td><td><select name="paideditiononly" size="1" disabled="disabled">      
                 <option value="999">Exclude</option>     
-                <?php           
-                $handle11 = fopen("$csvfiledirectory", "r"); $stop = 0; $i = 0;
-                while (($data = fgetcsv($handle11, 5000, $delimiter)) !== FALSE && $stop != 1)
-                {	 
-                    $stop++;
-                    $i = 0; 
-                    while(isset($data[$i]))
-                    {
-                        $data[$i] = rtrim($data[$i]);
-                        ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
-                        $i++;
-                    }
-                }
-                fclose($handle11);
-                ?>
                 </select>
                 Select a product code&nbsp;for identification later</td>
             </tr> 
@@ -283,31 +238,8 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
         <tr>
             <td>Custom List 1:</td>
             <td></td>
-            <td><select name="customlist1" size="1">      
+            <td><select name="paidedition" size="1" disabled="disabled">      
                 <option value="999">Exclude</option>     
-                <?php           
-            $handle12 = fopen("$csvfiledirectory", "r"); 
-
-            $stop = 0;
-            $i = 0;
-            while (($data = fgetcsv($handle12, 5000, $delimiter)) !== FALSE && $stop != 1)// Gets CSV rows
-            {	 
-                $stop++;// used to limit row parsing to just 1
-            
-                $i = 0; 
-            
-                while(isset($data[$i]))
-                {
-                    $data[$i] = rtrim($data[$i]);
-                    
-                    ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
-                
-                    $i++; // $i will equal number of columns - use to process submission
-                }
-            }
-            
-            fclose($handle12);
-            ?>
             </select>
             Select variation in product i.e Blue,Green,Red</td>
         </tr>
@@ -315,32 +247,11 @@ while (($data = fgetcsv($handle, 5000, $delimiter)) !== FALSE && $stop_rows != 1
         <tr>
             <td>Custom List 2:</td>
             <td></td>
-            <td><select name="customlist2" size="1">      
+            <td>
+            <select name="paidedition" size="1" disabled="disabled">      
                 <option value="999">Exclude</option>     
-                <?php           
-            $handle13 = fopen("$csvfiledirectory", "r");
-            $stop = 0;
-            $i = 0;
-            while (($data = fgetcsv($handle13, 5000, $delimiter)) !== FALSE && $stop != 1)// Gets CSV rows
-            {	 
-                $stop++;// used to limit row parsing to just 1
-            
-                $i = 0; 
-            
-                while(isset($data[$i]))
-                {
-                    $data[$i] = rtrim($data[$i]);
-                    
-                    ?><option value="<?php echo $i; ?>"><?php echo $i . ' - ' . $data[$i]; ?></option><?php
-                
-                    $i++; // $i will equal number of columns - use to process submission
-                }
-            }
-            
-            fclose($handle13);
-            ?>
             </select>
-            Select variation in product i.e&nbsp;</td>
+            Select variation in product i.e&nbsp;Large, Medium, Small</td>
         </tr>
 			
                             

@@ -18,13 +18,13 @@
                             
                             <tr>
                                 <td>Pending</td>
-                                <td><input type="radio" name="poststatus" value="pending" id="poststatus_1" /></td>
+                                <td><input type="radio" name="paideditiononly" value="paideditiononly" id="paideditiononly" disabled="disabled" /></td>
                                 <td></td>
                             </tr>
                                                 
                             <tr>
                                 <td>Draft </td>
-                                <td><input type="radio" name="poststatus" value="draft" id="poststatus_2" /></td>
+                                <td><input type="radio" name="paideditiononly" value="paideditiononly" id="paideditiononly" disabled="disabled" /></td>
                                 <td></td>
                             </tr>
                         </table>                  
@@ -43,7 +43,7 @@
                         <table>
                             <tr>
                                 <td></td>
-                                <td>Random Post Date: <input name="randomdate" type="checkbox" value="1" /></td>
+                                <td>Random Post Date: <input name="paideditiononly" type="checkbox" value="paideditiononly" disabled="disabled" /></td>
                                 <td></td>
                             </tr>
                         </table>                  
