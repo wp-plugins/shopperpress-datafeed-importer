@@ -6,15 +6,15 @@ function spdfi_startpausecancelled($s,$c,$id)
 	$SPClink .= $_SERVER['PHP_SELF'];
 	if($s == 100)
 	{
-		$SPClink .= '?page=manage_campaigns_spdfi&id='.$id.'&action=pause';
+		$SPClink .= '?page=manage_campaigns_plus&id='.$id.'&action=pause';
 	}
 	elseif($s == 200)
 	{
-		$SPClink .= '?page=manage_campaigns_spdfi&id='.$id.'&action=start';
+		$SPClink .= '?page=manage_campaigns_plus&id='.$id.'&action=start';
 	}
 	elseif($s == 300)
 	{
-		$SPClink .= '?page=manage_campaigns_spdfi&id='.$id.'&action=complete';
+		$SPClink .= '?page=manage_campaigns_plus&id='.$id.'&action=complete';
 	}
 	
 	// Meta title
@@ -60,7 +60,7 @@ function spdfi_campaignundo($s,$c,$id)
 	// First part of URL is PHP SELF
 	$UNDOlink .= $_SERVER['PHP_SELF'];
 	// Use campaign ID and action in rest of URL
-	$UNDOlink .= '?page=manage_campaigns_spdfi&id='.$id.'&action=undo';
+	$UNDOlink .= '?page=manage_campaigns_plus&id='.$id.'&action=undo';
 	// Start meta title
 	$UNDOlink .= '" title="';
 	// Meta link title
@@ -77,12 +77,12 @@ function spdfi_campaignundo($s,$c,$id)
 # FUNCTION DELETES CAMPAIGN INSTANCE FROM CSV 2 POST DATABASE
 function spdfi_campaigndelete($id)
 {
-	echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?page=manage_campaigns_spdfi&id=' . $id . '&action=delete" title="Delete campaign '. $id .'">Delete</a></td>';
+	echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?page=manage_campaigns_plus&id=' . $id . '&action=delete" title="Delete campaign '. $id .'">Delete</a></td>';
 }
 
 function spdfi_campaignview($name,$id)
 {
-	echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?page=manage_campaigns_spdfi&id=' . $id . '&action=view" title="Manage campaign '. $name .'">Manage '. $name .' </a></td>';
+	echo '<td><a href="' . $_SERVER['PHP_SELF'] . '?page=manage_campaigns_plus&id=' . $id . '&action=view" title="Manage campaign '. $name .'">Manage '. $name .' </a></td>';
 }
 
 function spdfi_pausecampaign($camid)
@@ -96,18 +96,9 @@ function spdfi_pausecampaign($camid)
 function spdfi_startcampaign($camid)
 {
 	global $wpdb;
-	$count = $wpdb->get_var("SELECT COUNT(*) FROM " .$wpdb->prefix . "spdfi_campaigns WHERE stage = '100'");
-	if( $count > 0 )
-	{
-		return '<h3>Campaign could not be found or could not be started because one is currently active! Please pause all other campaigns first.</h3>';
-	}
-	else
-	{
-		global $wpdb;
-		$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET stage = '100' WHERE id = '$camid'";
-		$result = $wpdb->query($sqlQuery);
-		if($result){return '<h3>Campaign Now Running</h3>';}else{return '<h3>Campaign Failed To Start</h3>';}
-	}
+	$sqlQuery = "UPDATE " .	$wpdb->prefix . "spdfi_campaigns SET stage = '100' WHERE id = '$camid'";
+	$result = $wpdb->query($sqlQuery);
+	if($result){return '<h3>Campaign Now Running</h3>';}else{return '<h3>Campaign Failed To Start</h3>';}
 }
 
 function spdfi_deletecampaign($camid)

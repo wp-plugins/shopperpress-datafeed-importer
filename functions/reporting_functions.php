@@ -1,4 +1,21 @@
 <?php
+// basic debugging tracker - when debuggin is on records script state messages to text file
+function spdfi_debug_write($line,$filename,$message)
+{
+	if(get_option('spdfi_debugmode') == 1)
+	{
+		// update last point of execution option and record latest known point of execution
+		update_option('spdfi_lastpointofexecution','Ran wtg_spdfi_processcheck function - File wp-csv-2-post - Scheduled campaign processing begun!');	
+		// write latest poe to debug file
+		$debugfiledir = WP_CONTENT_DIR . '/spdfifiles/';	
+		$file = $debugfiledir . "spdfi_debug.txt";
+		$file  = fopen($file , 'a');
+		$text = "Line:" . $line . " File:" . $filename . " Message:" . $message . "\n";
+		fwrite($file , $text);
+		fclose($file );		
+	}
+}
+
 //use to display any text message with any style
 function messagebox_spdfi($style, $message){echo '<div class="'.$style.'">'.$message.'</div>';}
 
@@ -18,7 +35,7 @@ function error_spdfi($line,$file,$my_error)
 		$sqlQuery = "INSERT INTO " . $wpdb->prefix . "spdfi_reports (line,file,my_error,date) VALUES ('$line','$file','$my_error',NOW())";
 		$wpdb->query($sqlQuery);
 		
-		emailerrorreport_spdfi($line,$file,$my_error);
+		emailerrorreport_spdfiplus($line,$file,$my_error);
 	}
 }
 
@@ -59,9 +76,20 @@ function fullerrorreport_spdfi()
 function emailerrorreport_spdfi($line,$file,$my_error)
 {	
 	$email = $my_error;
+	
+	$email .= '
+	<br />
+	Server/Domain: ' . $_SERVER['HTTP_HOST'] .'
+	<br />
+	File Name: ' . $file . '
+	<br />
+	Line Number: ' . $line .'
+	<br />
+	';
+
 	if(get_option('spdfi_debugmode') == 1)// email error@webtechglobal.co.uk
 	{
-		wp_mail('error@webtechglobal.co.uk', 'spdfi Error Report', $email);
+		//wp_mail('error@webtechglobal.co.uk', 'CSV 2 POST Error Report', $email);
 	}
 }
 

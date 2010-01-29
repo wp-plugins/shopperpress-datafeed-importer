@@ -1,28 +1,81 @@
 <?php
-function determine_delimiter_wtg($filename)
+// simply returns the passed filename with prepended profile name tag
+function spdfi_csvfilesprofilename($filename)
 {
-	 $fileChunks = explode(".", $filename);
-     return get_option($fileChunks[0]); 
+   	return 'spdfiprofile_' . $filename;
 }
 
-function spdfi_getcsvfilesdir()
+// will return the profiles entire array from wordpress options table
+function spdfi_getcsvprofile( $filename )
 {
-	return WP_CONTENT_DIR . '/spdfifiles/';
+   	$profileoptionname = spdfi_csvfilesprofilename($filename);
+	return get_option( $profileoptionname );			
 }
 
-function spdfi_tooltip($tooltip)
+// function initiates a newly uploaded csv files profile in the wordpress options table
+function spdfi_createcsvprofile( $filename )
 {
-	$tooltip_setting = get_option('spdfi_tooltipsonoff');
-	if($tooltip_setting == 1)
-	{
-		echo '<a href="#" class="tt">?<span class="tooltip"><span class="top"></span><span class="middle">' . $tooltip . '</span><span class="bottom"></span></span></a>';	
-	}
+    global $wpdb;
+
+	// create the initial wysiwyg editor entry so that only updates are required afterwards
+    $sqlQuery = "INSERT INTO " . $wpdb->prefix . "spdfi_layouts (name,code,inuse,type,csvfile,wysiwyg_content,wysiwyg_title) VALUES ('$filename','TBC',0,0,'$filename','TBC','TBC')";
+    $wpdb->query( $sqlQuery );
+	
+	// create profile option for the csv file
+	$optionname = spdfi_csvfilesprofilename($filename);
+			
+	$specialfunctions['columns'] = array(
+		'price_column' => 'NA',
+		'old_price_column' => 'NA',
+		'image_column' => 'NA',
+		'images_column' => 'NA',
+		'thumbnail_column' => 'NA',
+		'qty_column' => 'NA',
+		'customlist1_column' => 'NA',
+		'customlist2_column' => 'NA',
+		'shipping_column' => 'NA',
+		'featured_column' => 'NA',
+		'excerpts_column' => 'NA',
+		'tags_column' => 'NA',
+		'uniqueid_column' => 'NA',
+		'urlcloaking_column' => 'NA',
+		'permalink_column' => 'NA',
+		'dates_column' => 'NA'
+	);
+				
+	// the state is a boolean switch which will be used to switch the special function on or off per campaign on stage 2
+	$specialfunctions['states'] = array(
+		'price_state' => 'OFF',
+		'old_price_state' => 'OFF',
+		'image_state' => 'OFF',
+		'images_state' => 'OFF',
+		'thumbnail_state' => 'OFF',
+		'qty_state' => 'OFF',
+		'customlist1_state' => 'OFF',
+		'customlist2_state' => 'OFF',
+		'shipping_state' => 'OFF',
+		'featured_state' => 'OFF',
+		'excerpt_state' => 'OFF',
+		'tags_state' => 'OFF',
+		'uniqueid_state' => 'OFF',
+		'urlcloaking_state' => 'OFF',
+		'permalink_state' => 'OFF',
+		'dates_state' => 'OFF'
+	);
+	
+	// csv file specific format information
+	$specialfunctions['format'] = array(
+		'delimiter' => ',',
+		'columns_pear' => '1',
+		'quote_pear' => '"'
+	);
+	
+	add_option( $optionname, $specialfunctions );	
 }
 
-function spdfi_queryresult($q)
-{
-	if(!$q){ return false; }else{ return true; }
-}
+function spdfi_getcsvfilesdir(){	return WP_CONTENT_DIR . '/spdfifiles/'; }
+
+function spdfi_queryresult($q){ if(!$q){ return false; }else{ return true; }}
 
 // check and deal with safe mode status
 function spdfi_checksafemodestatus()
@@ -61,7 +114,7 @@ function spdfi_doesexist_csvfilesfolder()
 		if(!$outcome)
 		{	
 			return '
-			<span class="problemred">ERROR - Folder is not present and cannot be created or is just not writeable! You may need to create the directory manually. Example: http://www.domainname.com/wp-content/uploads/spdfifiles</span>
+			<span class="problemred">ERROR - Folder is not present and cannot be created or is just not writeable! You may need to create the directory manually. Example: http://www.domainname.com/wp-content/spdfifiles</span>
 			';
 		}
 		else
@@ -96,7 +149,7 @@ function isAllowedExtension_spdfi($fileName)
 //STRIP HTML, TRUNCATE, CREATE TITLE
 function create_meta_title_spdfi($str, $length) 
 {
-	$title = truncate_string_spdfi(seo_simple_strip_tags_spdfi($str), $length);
+	$title = truncate_string_wtg_spdfiplus(seo_simple_strip_tags_wtg_spdfiplus($str), $length);
 	if (strlen($str) > strlen($title)) 
 	{$title .= "...";}
 	return $title;
@@ -104,25 +157,34 @@ function create_meta_title_spdfi($str, $length)
 /* Example:	<title>WebTechGlobal: <?php echo create_meta_title($pagedesc, $met_tit_len);?></title> */
 
 //STRIP HTML, TRUNCATE, CREATE DESCRIPTION
-function create_meta_description_spdfi($str, $length)
+function createexcerpt_spdfi($str, $length)
 {
-	$meta_description = truncate_string_spdfi(seo_simple_strip_tags_spdfi($str), $length);
+	$meta_description = truncate_string_wtg_spdfiplus(seo_simple_strip_tags_wtg_spdfiplus($str), $length);
 	if (strlen($str) > strlen($meta_description)) {$meta_description .= "...";}
 	return $meta_description;
 }
 /* Example:	<meta name="description" content="<?php echo create_meta_description($pagedesc, $met_des_len);?>" /> */
 
-
-//STRIP HTML,TRUNCATE,CREATE KEYWORDS
-function create_meta_keywords_spdfi($str, $length) 
-{
-	return 'paid,edition,only';
-}
-
 // not only remove specified words but removes numeric only values if $tagsnumeric is set to 1 and not 0
-function create_tags_spdfi($str, $length, $tagsnumeric) 
+function createtags_spdfi($str, $length, $tagsnumeric) 
 {
-	return 'paid,edition,only';
+	$exclude = array(get_option('spdfi_exclusions'));
+	$splitstr = @explode(" ", truncate_string_wtg_spdfiplus(seo_simple_strip_tags_wtg_spdfiplus(str_replace(array(",",".")," ", $str)), $length));
+	$new_splitstr = array();
+	foreach ($splitstr as $spstr) 
+	{
+		if($tagsnumeric == 1)
+		{	// numeric only values will be removed
+			if (strlen($spstr) > 2 && !(in_array(strtolower($spstr), $new_splitstr)) && !(in_array(strtolower($spstr), $exclude)) && !is_numeric($spstr)) 
+			{$new_splitstr[] = strtolower($spstr);}
+		}
+		elseif($tagsnumeric == 0)
+		{	// numeric only values will be included
+			if (strlen($spstr) > 2 && !(in_array(strtolower($spstr), $new_splitstr)) && !(in_array(strtolower($spstr), $exclude))) 
+			{$new_splitstr[] = strtolower($spstr);}
+		}
+	}
+	return @implode(", ", $new_splitstr);
 }
 
 //STRIP HTML TAGS - CALLED WITHIN THE OTHER FUNCTIONS
@@ -195,9 +257,6 @@ function ucfirst_title_spdfi($string)
 }
 
 //WORD WRAP, EXCLUDES HTML IN COUNT, SET MAX COLUMNS/CHARACTERS
-// splitS word, that is longer than $cols and is outside
-// HTML tags, by the string $cut. Lines with whitespace in them are ok, only
-// single words over $cols length are split. (&shy; = safe-hyphen)
 function wordwrap_excluding_html_spdfi($str, $cols = 30, $cut = "&shy;")
 {
 	$len = strlen($str);
@@ -336,4 +395,111 @@ function get_categories_fordropdownmenu_spdfi()
 		<?php
 	}      
 } 
+
+function spdfi_opt($possible,$actual){	if($possible == $actual){return 'selected="selected"';}}
+
+function spdfi_datepicker_nonejavascript()
+{
+	$monthstart = get_option('spdfi_randomdate_monthstart');
+    $daystart = get_option('spdfi_randomdate_daystart');
+    $yearstart = get_option('spdfi_randomdate_yearstart');
+    $monthend = get_option('spdfi_randomdate_monthend');
+    $dayend = get_option('spdfi_randomdate_dayend');
+    $yearend = get_option('spdfi_randomdate_yearend');
+	?>
+    
+	<strong>Start Date: </strong>    
+    
+    <select name="spdfi_randomdate_monthstart">
+        <option <?php echo spdfi_opt('01',$monthstart)?> value="01">January</option>
+        <option <?php echo spdfi_opt('02',$monthstart)?> value="02">Febuary</option>
+        <option <?php echo spdfi_opt('03',$monthstart)?> value="03">March</option>
+        <option <?php echo spdfi_opt('04',$monthstart)?> value="04">April</option>
+        <option <?php echo spdfi_opt('05',$monthstart)?> value="05">May</option>
+        <option <?php echo spdfi_opt('06',$monthstart)?> value="06">June</option>
+        <option <?php echo spdfi_opt('07',$monthstart)?> value="07">July</option>
+        <option <?php echo spdfi_opt('08',$monthstart)?> value="08">August</option>
+        <option <?php echo spdfi_opt('09',$monthstart)?> value="09">September</option>
+        <option <?php echo spdfi_opt('10',$monthstart)?> value="10">October</option>
+        <option <?php echo spdfi_opt('11',$monthstart)?> value="11">November</option>
+        <option <?php echo spdfi_opt('12',$monthstart)?> value="12">December</option>
+    </select>
+    
+    <select name="spdfi_randomdate_daystart">
+    	<?php
+			$counter = 1;
+			while($counter < 32)
+			{
+				$code = '<option ';
+				$code .= spdfi_opt($counter,$daystart);
+				$code .= ' value="' . $counter .'">' . $counter .'</option>';
+				echo $code;
+				$counter++;
+			}
+		?>
+    </select>
+    
+    <select name="spdfi_randomdate_yearstart">
+    	<?php
+			$counter = 1990;
+			while($counter < 2021)
+			{
+				$code = '<option ';
+				$code .= spdfi_opt($counter,$yearstart);
+				$code .= ' value="' . $counter .'">' . $counter .'</option>';
+				echo $code;
+				$counter++;
+			}
+		?>
+    </select>
+
+	<br />
+
+	<strong>End Date:</strong>
+
+    <select name="spdfi_randomdate_monthend">
+        <option <?php spdfi_opt('01',$monthend)?> value="01">January</option>
+        <option <?php spdfi_opt('02',$monthend)?> value="02">Febuary</option>
+        <option <?php spdfi_opt('03',$monthend)?> value="03">March</option>
+        <option <?php spdfi_opt('04',$monthend)?> value="04">April</option>
+        <option <?php spdfi_opt('05',$monthend)?> value="05">May</option>
+        <option <?php spdfi_opt('05',$monthend)?> value="06">June</option>
+        <option <?php spdfi_opt('07',$monthend)?> value="07">July</option>
+        <option <?php spdfi_opt('08',$monthend)?> value="08">August</option>
+        <option <?php spdfi_opt('09',$monthend)?> value="09">September</option>
+        <option <?php spdfi_opt('10',$monthend)?> value="10">October</option>
+        <option <?php spdfi_opt('11',$monthend)?> value="11">November</option>
+        <option <?php spdfi_opt('12',$monthend)?> value="12">December</option>
+    </select>
+    
+    <select name="spdfi_randomdate_dayend">
+    	<?php
+			$counter = 1;
+			while($counter < 32)
+			{
+				$code = '<option ';
+				$code .= spdfi_opt($counter,$dayend);
+				$code .= ' value="' . $counter .'">' . $counter .'</option>';
+				echo $code;
+				$counter++;
+			}
+		?>
+    </select>
+    
+    <select name="spdfi_randomdate_yearend">
+    	<?php
+			$counter = 1990;
+			while($counter < 2021)
+			{
+				$code = '<option ';
+				$code .= spdfi_opt($counter,$yearend);
+				$code .= ' value="' . $counter .'">' . $counter .'</option>';
+				echo $code;
+				$counter++;
+			}
+		?>
+    </select>
+
+<?php 
+}
 ?>
