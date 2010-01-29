@@ -5,13 +5,34 @@ if(!empty($_POST['masspostbycatdelete_opentool']) || !empty($_POST['massdelete_d
 	# PROCESS THIS TOOLS FORM SUBMISSION
 	if(!empty($_POST['massdelete_deleteselectedposts']))
 	{
-		echo 'Available in the paid edition only';
+		// post delete requested - get delete criteria and process
+		if(!isset($_POST['deletelimit'])){$deletelimit = 500;}else{$deletelimit = $_POST['deletelimit'];}
+		
+		foreach ( $_POST as $key => $postpart ) 
+		{				
+			if(is_numeric($postpart))
+			{
+				$string = "'showposts=-1&posts_per_page=".$deletelimit."&cat=".$postpart."');";
+				
+				 $myposts = query_posts($string);
+				 
+				foreach($myposts as $post)
+				{
+				
+					setup_postdata($post);
+					
+					wp_delete_post( $post->ID );
+				}
+			}
+		}
+		
+		wp_reset_query();
 	}	
 	?>
       
     <h4>Delete Posts By Category</h4>
     <p>Use to delete posts in a single category, enter a number around 500 at a time to avoid errors.</p>
-    <form method="post" name="mpd2" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_spdfi&amp;tool=masspostdelete" >
+    <form method="post" name="mpd2" action="<?php echo $_SERVER['PHP_SELF'];?>?page=tools_plus&amp;tool=masspostdelete" >
         <?php
         // get all categories and list them with check
         $categories = get_categories();
